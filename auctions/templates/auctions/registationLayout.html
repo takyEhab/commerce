@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Auctions</title>
+	<meta name="author" content="David Grzyb">
+    <meta name="description" content="">
+
+    <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href={% static 'auctions/online-store.png' %}/>
+
+    <style>
+        .body-bg {
+            background-color: #9921e8;
+            background-image: linear-gradient(315deg, #9921e8 0%, #5f72be 74%);
+        }
+    </style>
+    
+</head>
+<body class="body-bg min-h-screen pt-12 md:pt-20 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
+    <header class="max-w-lg mx-auto">
+        <a href="{% url 'index' %}">
+            <h1 class="text-4xl font-bold text-white text-center">Auctions</h1>
+        </a>
+    </header>
+
+    <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl">
+        <section>
+            <h3 class="font-bold text-2xl">Welcome Back</h3>
+            <p class="text-gray-600 pt-2">Login to your account.</p>
+        </section>
+
+        <section class="mt-10">
+
+        {% block body %}
+        {% endblock %}
+            
+        </section>
+    </main>
+
+    {% block footer %}
+    {% endblock %}
+
+</body>
+</html>
