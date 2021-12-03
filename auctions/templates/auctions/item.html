@@ -1,0 +1,57 @@
+{% extends "auctions/layout.html" %}
+{% load humanize %}
+
+{% block title %}{{item.name}}{% endblock %}
+
+{% block body %}
+    
+    {% if item.active %}
+        {% if request.user == item.user %}
+            <a href="{% url 'close' item.id %}" type="button" class="btn btn-primary">Close The Auction</a>
+        {% endif %}
+        <h1>Active</h1>
+    {% else %}
+        <h1>Not Active</h1>
+        <u><h4>Last Bid: {{winner}}</h4></u>
+    {% endif %}
+    <h5>Title: {{item.name}}</h5>
+    <h5>Description: {{item.description}}</h5>
+    <h5>Category: {{item.category}}</h5>
+    <h5>Current Bid: ${{ item.startbid|intcomma }}</h5>    
+    <h5>Owner: {{item.user}}</h5>
+
+    {% if item.img %}
+        <h5>Image: </h5>
+        <img width="500"src="{{item.img.url}}">
+    {% endif %}
+    
+    {% if item.active %}
+        {% if message == "Remove Watch list" %}
+        <a href="{% url 'watchlist' item.id %}?q=r">{{ message }}</a>
+        {% else %}
+        <a href="{% url 'watchlist' item.id %}?q=a">{{ message }}</a>
+        {% endif %}
+
+
+        <form class="m-3 mt-5" action="{% url 'item' item.id %}" method="post">
+            {% csrf_token %}
+            {{form}}
+            {% comment %} input type="submit" name="bid" {% endcomment %}
+            <input type="submit" type="button" class="btn btn-primary">
+        </form>
+        {{error}}
+    {% endif %}
+    
+
+    <form class="mt-3"action="{% url 'comment' item.id %}" method="post">
+        {% csrf_token %}
+        {{comment_form}}
+        {% comment %} <input type="submit" name="comment"> {% endcomment %}
+        <input type="submit" type="button" class="btn btn-primary">
+    </form>
+    <ul>
+    {% for comment in comments %}
+        <li>{{ comment }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
