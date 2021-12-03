@@ -1,24 +1,35 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/registationLayout.html" %}
 
 {% block body %}
 
-    <h2>Login</h2>
+        <form class="flex flex-col" action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-6 pt-3 rounded bg-gray-200">
+                <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="email">Username</label>
+                <input type="text" name="username" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+            </div>
+            <div class="mb-6 pt-3 rounded bg-gray-200">
+                <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password">Password</label>
+                <input type="password" id="password" name="password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+            </div>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
 
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Login">
-    </form>
+    
+            <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Log In</button>
 
-    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+            {% if message %}
+                <div class="bg-red-100 border mt-4 border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ message }}</span>                    
+                </div>
+            {% endif %}
+
+        </form>
+{% endblock %} 
+{% block footer %}
+
+<div class="max-w-lg mx-auto text-center mt-12 mb-6">
+    <p class="text-white">Don't have an account? <a href={% url 'register' %} class="font-bold hover:underline">Register</a>.</p>
+</div>
 
 {% endblock %}
+
