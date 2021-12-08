@@ -7,37 +7,7 @@
     <form action="{% url 'createlisting' %}" method="post" enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form.as_p }}
-        {% comment %} <input autocomplete="off" placeholder="Listing Title" name="title" type="text" required="required">
-        <input autocomplete="off" placeholder="Description" name="description" required="required">
-        <input autocomplete="off" placeholder="Starting Bid" name="startBid" type="number" required="required">
-        <input autocomplete="off" placeholder="Category" name="category" type="text" required="required">
-        <input autocomplete="off" type="file" id="img" name="img" accept="image/*">
-        <input autocomplete="off" type="submit"> {% endcomment %}
-        {% comment %} {{ form }} {% endcomment %}
-        {% comment %} <div class="ml-3">
-        
-            {{ form.title.label_tag }}
-            <br>
-            {{ form.title }}
-            <br>
-            {{ form.description.label_tag }}
-            <br>
-            {{ form.description }}
-            <br>
-            {{ form.startBid.label_tag }}
-            <br>
-            {{ form.startBid }}
-            <br>
-            {{ form.category.label_tag }}
-            <br>
-            {{ form.category }}
-            <br>
-            {{ form.img.label_tag }}
-            <br>
-            {{ form.img }}
-            <br> {% endcomment %}
-            <input type="submit">
-        </div>
+        <input type="submit">
     </form>
         
 {% endblock %}

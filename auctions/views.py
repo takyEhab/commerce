@@ -10,19 +10,21 @@ from .models import Auctions, Bids, Comments, User, CATEGORY_CHOICES
 
 
 class CreateList(forms.Form):
-    
+
     title = forms.CharField(label="List Title", max_length=64)
     description = forms.CharField(widget=forms.Textarea)
-    category = forms.CharField(label='Category', widget=forms.Select(choices=CATEGORY_CHOICES))
+    category = forms.CharField(
+        label='Category', widget=forms.Select(choices=CATEGORY_CHOICES))
     startBid = forms.IntegerField(label="Starting Bid")
     img = forms.ImageField(required=False)
+
 
 class Bid(forms.Form):
     bid = forms.IntegerField(label="Bid")
 
+
 class Comment(forms.Form):
     comment = forms.CharField(widget=forms.Textarea)
-
 
 
 def index(request):
@@ -30,6 +32,10 @@ def index(request):
     return render(request, "auctions/index.html", {
         "auctions": auc.objects.all()
     })
+
+
+def new_index(request):
+    return render(request, "auctions/new_index.html")
 
 
 @login_required(redirect_field_name=None, login_url="login")
@@ -45,9 +51,10 @@ def createlist(request):
             category = form.cleaned_data["category"]
             img = form.cleaned_data["img"]
 
-            username = Auctions(name=title, startbid=startbid, description=description, category=category, img = img, user=request.user)
+            username = Auctions(name=title, startbid=startbid, description=description,
+                                category=category, img=img, user=request.user)
             username.save()
-            
+
             return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, "auctions/createlisting.html", {
@@ -56,8 +63,9 @@ def createlist(request):
 
     else:
         return render(request, "auctions/createlisting.html", {
-            "form": CreateList() 
+            "form": CreateList()
         })
+
 
 def items(request, item_id):
     item = Auctions.objects.get(pk=item_id)
@@ -67,11 +75,10 @@ def items(request, item_id):
 
     win = item.bid.last()
     context["winner"] = win
-    
+
     context["item"] = item
     context["form"] = Bid()
     context["comment_form"] = Comment()
-
 
     comments = item.auction_comment.all()
     context["comments"] = comments
@@ -79,7 +86,7 @@ def items(request, item_id):
     if request.method == 'GET':
         if user in users:
             context["message"] = "Remove Watch list"
-            
+
         else:
             context["message"] = "Add to watch list"
 
@@ -102,14 +109,13 @@ def items(request, item_id):
             else:
                 context["error"] = "The bid must be more than the current price"
                 return render(request, "auctions/item.html", context)
-            
+
         else:
             context["form"] = form
             return render(request, "auctions/item.html", context)
 
-    
-        
-@login_required(redirect_field_name=None, login_url="login")           
+
+@login_required(redirect_field_name=None, login_url="login")
 def comment(request, item_id):
     item = Auctions.objects.get(pk=item_id)
 
@@ -118,27 +124,29 @@ def comment(request, item_id):
 
         if Comment_form.is_valid():
             comment = Comment_form.cleaned_data["comment"]
-            user_comment = Comments(comment=comment, auction=item, user=request.user)
+            user_comment = Comments(
+                comment=comment, auction=item, user=request.user)
             user_comment.save()
 
             return HttpResponseRedirect(reverse("item", kwargs={'item_id': item_id}))
 
         else:
             return HttpResponseRedirect(reverse("item", kwargs={'item_id': item_id}))
-    
+
+
 def categories(request, category):
     items = Auctions.objects.all()
-    
+
     if [item for item in CATEGORY_CHOICES if category in item]:
-        return render(request, "auctions/category.html",{
+        return render(request, "auctions/category.html", {
             "category": category,
             "items": items
         })
     else:
-        return render(request, "auctions/error.html",{
+        return render(request, "auctions/error.html", {
             "message": "No category found"
         })
-        
+
 
 @login_required(redirect_field_name=None, login_url="login")
 def watch(request):
@@ -161,13 +169,13 @@ def watchlist(request, item_id):
         user.watchlist.remove(item_id)
         return HttpResponseRedirect(reverse("item", kwargs={'item_id': item_id}))
 
+
 def close(request, item_id):
     item = Auctions.objects.get(pk=item_id)
     if request.user == item.user:
         item.active = False
         item.save()
     return HttpResponseRedirect(reverse("item", kwargs={'item_id': item_id}))
-
 
 
 def login_view(request):
