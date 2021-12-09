@@ -1,18 +1,25 @@
 {% extends "auctions/layout.html" %}
 {% load humanize %}
+{% load static %}
 
 {% block body %}
     <h2>Active Listings</h2>
 
+    <div class="row">
 
-    <div class="card-deck">
     {% for auction in auctions%}
         {% if auction.active %}
-            <div class="card">
-                {% if auction.img %}
-                    <img class="card-img-top" src="{{auction.img.url}}" alt="Card image cap">
-                {% endif %}
-                <div class="card-body">
+
+        <div class="mb-3 col-lg-4 col-md-6">
+            <div style="display: inline-block;" class="card">
+
+					{% if auction.img %}
+						<img class="card-img-top" src="{{auction.img.url}}" alt="Card image cap">
+					{% else %}
+						<img class="card-img-top" src="{% static 'auctions/no-image.jpg' %}" alt="Card image cap">
+					{% endif %}
+
+            <div class="card-body">
                 <a class="link-primary"href="{% url 'item' auction.id %}"><h5 class="card-title">{{auction.name}}</h5></a>
                 <p class="card-text">{{auction.description}}</p>
                 </div>
@@ -20,8 +27,11 @@
                 <small>Current Bid: ${{ auction.startbid|intcomma }}</small>
                 </div>
             </div>
-        {% endif %}
+        </div>
         
+        {% endif %}
     {% endfor %}
+
     </div>
+
 {% endblock %}
