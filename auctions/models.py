@@ -6,7 +6,7 @@ from django.db.models.deletion import CASCADE
 CATEGORY_CHOICES = [
     ("No Category", 'No Category'),
     ("Cars", 'Cars'),
-    ("Fathion", 'Fathion'),
+    ("Fashion", 'Fashion'),
     ("Sport", 'Sport'),
     ("Electronics", 'Electronics'),
 ]

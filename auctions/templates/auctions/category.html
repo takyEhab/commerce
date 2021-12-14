@@ -6,15 +6,14 @@
 
 
     <ul>
-    {% comment %} {% for ite in item %} {% endcomment %}
-        {% comment %} <li>{{item}}</a><li> {% endcomment %}
-    {% comment %} {% endfor %} {% endcomment %}
     {% for item in items %}
 
         {% if item.category == category %}
             <li><a href="{% url "item" item.id %}">{{item}}</a></li>
+            
         {% endif %}
-        
+        {% empty %}
+<h4>No items added to {{category}}</h4>    
     {% endfor %}
     
     </ul>

@@ -26,11 +26,9 @@ class Bid(forms.Form):
 class Comment(forms.Form):
     comment = forms.CharField(widget=forms.Textarea)
 
-
 def index(request):
-    auc = Auctions
     return render(request, "auctions/index.html", {
-        "auctions": auc.objects.all()
+        "auctions": Auctions.objects.all()
     })
 
 
@@ -93,6 +91,9 @@ def items(request, item_id):
         return render(request, "auctions/item.html", context)
 
     else:
+        if not request.user.is_authenticated:
+            context["error"] = "You have to be loged in"
+            return render(request, "auctions/item.html", context)
 
         form = Bid(request.POST)
 
