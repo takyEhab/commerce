@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 from django.contrib.auth.decorators import login_required
+import os
 
 from .models import Auctions, Bids, Comments, User, CATEGORY_CHOICES
 
@@ -27,6 +28,12 @@ class Comment(forms.Form):
     comment = forms.CharField(widget=forms.Textarea)
 
 def index(request):
+    for item in Auctions.objects.all():
+        if not item.img:
+            continue
+        elif not os.path.isfile("images/" + str(item.img)):
+                Auctions.objects.filter(id=item.id).delete()
+
     return render(request, "auctions/index.html", {
         "auctions": Auctions.objects.all()
     })

@@ -4,14 +4,13 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    <div class="row">
+    <div class="container">
+      <div class="row">
 
     {% for auction in auctions %}
         {% if auction.active %}
 
         <div class="mb-3 col-lg-3 col-md-6">
-            <div style="display: inline-block;" class="card">
 
 					{% if auction.img %}
 						<img class="card-img-top" src="{{auction.img.url}}" alt="Card image cap">
@@ -22,18 +21,17 @@
             <div class="card-body">
                 <a class="link-primary"href="{% url 'item' auction.id %}"><h5 class="card-title">{{auction.name}}</h5></a>
                 <p class="card-text">{{auction.description}}</p>
-                </div>
-                <div class="card-footer">
-                <small>Current Bid: ${{ auction.startbid|intcomma }}</small>
-                </div>
             </div>
+                <div class="card-footer">
+                  <small>Current Bid: ${{ auction.startbid|intcomma }}</small>
+                </div>
         </div>
 
         {% endif %}
-	{% empty %}
+	  {% empty %}
 	    <h4 class="ml-5">No Active items</h4>
     {% endfor %}
 
+      </div>
     </div>
-
 {% endblock %}
